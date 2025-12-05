@@ -21,11 +21,28 @@ class Range:
         return num[0:mid] == num[mid:]
     
     @staticmethod
-    def is_invalid_p2(num: str) -> bool:
-        if len(num) % 2 != 0:
-            return False
-        mid = int(len(num)/2)
-        return num[0:mid] == num[mid:]
+    def is_invalid_p2(num: str) -> bool:        
+        num_len = len(num)
+        for num_repeats in range(2, num_len+1):
+            if num_len % num_repeats  != 0:
+                # not evenly divisible - not a valid repeat
+                continue
+
+            len_repeat = int(len(num)/num_repeats)
+
+            start = 0
+            part = num[start:start+len_repeat]
+            for end in range(len_repeat, len(num)+1, len_repeat):
+                if num[start:end] != part:
+                    break
+                start += len_repeat
+
+            if start == len(num):
+                return True
+
+        return False
+                    
+
 
     def find_invalid_ids(self, part: int=1) -> list[int]:
         is_invalid = self.is_invalid_p1 if part == 1 else self.is_invalid_p2
