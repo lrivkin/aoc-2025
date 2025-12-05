@@ -13,16 +13,28 @@ def part_1(file: str):
     ranges_in, ingredients_in = input.split("\n\n")
     fresh_ranges = set()
 
+    ranges: list[tuple[int, int]] = []
+
     for r in ranges_in.splitlines():
         low, high = r.split("-")
-        fresh_ranges.update(range(int(low), int(high)+1))
+        ranges.append((int(low), int(high)))
+
+    ranges = sorted(ranges, key=lambda x: x[0])
 
     ans = 0
     for i in ingredients_in.splitlines():
-        if int(i) in fresh_ranges:
-            ans += 1
+        i = int(i)
+        for low, high in ranges:
+            if i >= low and i <= high:
+                ans += 1
+                break
+
     return ans
 
 class TestDay5(TestCase):
     def test_part_1(self):
         self.assertEqual(3, part_1("test.txt"))
+
+    def test_part_1_real(self):
+        ans = part_1("input.txt")
+        self.assertEqual(-1, ans)
