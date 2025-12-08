@@ -22,7 +22,7 @@ def parse_input(file):
     for i in ingredients_in.splitlines():
         ingredients.append(int(i))
 
-    ranges = sorted(ranges, key=lambda x: x[0])
+    ranges = sorted(ranges, key=lambda x: (x[0], x[1]))
     return ranges, ingredients
 
 def part_1(file: str):
@@ -45,13 +45,13 @@ def part_2(file: str):
         if max_seen > high:
             # this whole range has already been covered
             continue
+
         if max_seen > low:
-            low = max_seen + 1
+            ans += (high - max_seen) + 1
+        else:
+            ans += (high - low) + 1
 
-        ans += high-low+1
-        max_seen = max(max_seen, high)
-
-
+        max_seen = high + 1
 
     return ans
 
@@ -66,5 +66,5 @@ class TestDay5(TestCase):
         self.assertEqual(14, part_2("test.txt"))
 
     def test_part_2_real(self):
-        # 348115621205555 - too high
+        # 348115621205535 - correct
         print(part_2("input.txt"))
