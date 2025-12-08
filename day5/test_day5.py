@@ -40,17 +40,16 @@ def part_1(file: str):
 def part_2(file: str):
     ranges, _ = parse_input(file)
     ans = 0
-    for idx, r in enumerate(ranges):
-        low, high = r
-        ans += high-low+1
+    max_seen = 0
+    for low, high in ranges:
+        if max_seen > high:
+            # this whole range has already been covered
+            continue
+        if max_seen > low:
+            low = max_seen + 1
 
-        j = idx+1
-        while j < len(ranges):
-            if ranges[j][0] > high:
-                break
-            ranges[j][0] = high+1
-            ranges[j][1] = max(ranges[j][1], high+1)
-            j+= 1
+        ans += high-low+1
+        max_seen = max(max_seen, high)
 
 
 
@@ -65,4 +64,7 @@ class TestDay5(TestCase):
 
     def test_part_2(self):
         self.assertEqual(14, part_2("test.txt"))
+
+    def test_part_2_real(self):
+        # 348115621205555 - too high
         print(part_2("input.txt"))
