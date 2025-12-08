@@ -47,6 +47,7 @@ def part_2(file: str):
             continue
 
         if max_seen > low:
+            # part of the range has been covered
             ans += (high - max_seen) + 1
         else:
             ans += (high - low) + 1
