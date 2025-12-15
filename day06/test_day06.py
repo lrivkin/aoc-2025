@@ -4,14 +4,7 @@ from pathlib import Path
 import numpy as np
 
 
-def part_1(filename):
-    p = Path(__file__).with_name(filename)
-
-    res = np.loadtxt(p, dtype=str)
-    arr = np.transpose(res)
-    operations = arr[:, -1]
-    numbers = arr[:, :-1].astype(int)
-
+def calculate_answer(operations: list[str], numbers: list[int]) -> int:
     overall_ans = 0
     for idx, operation in enumerate(operations):
         if operation == "*":
@@ -30,6 +23,16 @@ def part_1(filename):
 
     print(overall_ans)
     return overall_ans
+
+def part_1(filename):
+    p = Path(__file__).with_name(filename)
+
+    res = np.loadtxt(p, dtype=str)
+    arr = np.transpose(res)
+    operations = arr[:, -1]
+    numbers = arr[:, :-1].astype(int)
+
+    return calculate_answer(operations, numbers)
 
 
 def part_2(filename):
@@ -52,9 +55,7 @@ def part_2(filename):
                 if lines[row][col] != " ":
                     num += lines[row][col]
 
-            if num.strip() == "" or col == 0:
-                if col == 0:
-                    col = -1
+            if num.strip() == "":
                 operations.append(lines[row+1][col+1])
                 numbers.append(nums)
                 nums = []
@@ -64,25 +65,10 @@ def part_2(filename):
 
             col -= 1
 
-        overall_ans = 0
-        for idx, operation in enumerate(operations):
-            if operation == "*":
+        operations.append(lines[row+1][col+1])
+        numbers.append(nums)
 
-                ans = 1
-                for n in numbers[idx]:
-                    ans *= n
-
-            elif operation == "+":
-                ans = 0
-                for n in numbers[idx]:
-                    ans += n
-            else:
-                pass
-
-            overall_ans += ans
-
-        print(overall_ans)
-
+        return calculate_answer(operations, numbers)
 
 
 class Test(TestCase):
@@ -94,6 +80,7 @@ class Test(TestCase):
 
     def test_part2(self):
         part_2("test.txt")
+        # Result: 3263827
 
     def test_part2_real(self):
         part_2("input.txt")
