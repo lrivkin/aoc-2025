@@ -9,7 +9,16 @@ def read_input(file: str):
 
 def part_2(file):
     input = read_input(file).splitlines()
-    print(input)
+
+    start_pos = 50
+    for line in input:
+        if line[0] == 'L':
+            pass
+        elif[0] == 'R':
+            pass
+        else:
+            raise ValueError()
+
     return -1
 
 class Test(TestCase):
