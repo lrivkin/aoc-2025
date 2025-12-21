@@ -1,8 +1,20 @@
 from unittest import TestCase
+from pathlib import Path
+
+def read_input(file: str):
+    p = Path(__file__).with_name(file)
+
+    with open(p) as f:
+        return f.read()
+
+def part_2(file):
+    input = read_input(file).splitlines()
+    print(input)
+    return -1
 
 class Test(TestCase):
     def test_part1(self):
-        pass
+        self.assertEqual(6, part_2("test.txt"))
 
     def test_part2(self):
         pass
