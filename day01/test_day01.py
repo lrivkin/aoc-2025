@@ -7,29 +7,38 @@ def read_input(file: str):
     with open(p) as f:
         return f.read()
 
-def part_2(file):
-    input = read_input(file).splitlines()
-
+def part_2(input: list[str]) -> int:
     num_zeros = 0
 
     position = 50
     for line in input:
         line = line.strip()
-
         dir = line[0]
         num = int(line[1:])
 
-        for _ in range(num):
-            if dir == 'L':
-                position -= 1
 
-            elif dir == 'R':
-                position += 1
-            else:
-                raise ValueError()
-            
-            if position % 100 == 0:
+        if dir == 'L':
+            position = 100 - position
+            position -= num
+
+        elif dir == 'R':
+            position += num
+
+        if position == 0:
+            num_zeros += 1
+
+        elif position >= 100:
+            while position >= 100:
+                position -= 100
                 num_zeros += 1
+
+        elif position < 0:
+            while position < 0:
+                position += 100
+                num_zeros += 1            
+        else:
+            pass
+
 
     return num_zeros
 
@@ -38,8 +47,22 @@ class Test(TestCase):
         pass
 
     def test_part2_real(self):
+        input = read_input("input.txt").splitlines()
         # 6530 = correct answer
-        print(part_2("input.txt"))
+        self.assertEqual(6530, part_2(input))
 
     def test_part2(self):
-        self.assertEqual(6, part_2("test.txt"))
+        input = read_input("test.txt").splitlines()
+
+        self.assertEqual(6, part_2(input))
+
+    def test_part2_debug(self):
+        want_one = [
+            ["L50", "R50"],
+            ["L50", "L50"],
+            ["R50", "L50"],
+            ["R50", "R50"]
+        ]
+        for test_case in want_one:
+            with self.subTest(case=test_case) as t:
+                self.assertEqual(1, part_2(test_case))
