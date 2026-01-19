@@ -18,6 +18,13 @@ def part_1(file):
         return ans
     return 0
 
+part2_test_ans = [
+    987654321111,
+    811111111119,
+    434234234278,
+    888911112111,
+]
+
 def part_2(file):
     return 0
 
